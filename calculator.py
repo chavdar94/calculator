@@ -37,8 +37,15 @@ class CalculatorWidget(Widget):
     def results(self):
         prev_number = self.ids.input_box.text
         try:
-            result = eval(prev_number)
-            self.ids.input_box.text = str(result)
+            if '%' in self.ids.input_box.text:
+                idx = prev_number.index('%')
+                left = prev_number[:idx]
+                right = prev_number[idx+1:]
+                result = (float(left) * float(right)) / 100
+                self.ids.input_box.text = str(result)
+            else:
+                result = eval(prev_number)
+                self.ids.input_box.text = str(result)
         except ZeroDivisionError:
             self.ids.input_box.text = "Can't divide by 0"
 
